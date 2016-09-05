@@ -1,0 +1,37 @@
+{
+  "name": "mtech",
+  "version": "0.0.1",
+  "description": "manage.tech.ikindness.cn",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BrickCarvingArtist/mtech.git"
+  },
+  "keywords": [
+    "tech",
+    "ikindness"
+  ],
+  "author": "BrickCarvingArtist",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/BrickCarvingArtist/mtech/issues"
+  },
+  "homepage": "https://github.com/BrickCarvingArtist/mtech#readme",
+  "dependencies": {
+    "babel-core": "^6.14.0",
+    "babel-polyfill": "^6.13.0",
+    "babel-preset-es2015": "^6.14.0",
+    "bcrypt": "^0.8.7",
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "mongoose": "^4.6.0"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-stylus": "^2.5.0",
+    "gulp-uglify": "^2.0.0"
+  }
+}
