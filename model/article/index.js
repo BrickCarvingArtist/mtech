@@ -11,7 +11,7 @@ const Article = new mongoose.Schema({
 		type : String,
 		required : 1
 	},
-	keyword : {
+	keywords : {
 		type : Array,
 		required : 1
 	},
