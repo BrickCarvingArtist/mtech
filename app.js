@@ -15,6 +15,7 @@ app.use(bodyParser.urlencoded({
 	extended : 1
 }));
 app.use(express.static(`${__dirname}/resource`));
+app.use(express.static(`${__dirname}/upload`));
 app.use(RouterApi(router));
 app.use(RouterStatic(router));
 app.listen(serverPort, () => {

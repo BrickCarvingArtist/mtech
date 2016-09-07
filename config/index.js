@@ -7,7 +7,7 @@ const ServerConfig = {
 		port : 35750
 	},
 	UploadConfig = {
-		path : `${process.cwd()}/src/upload/`
+		path : `${process.cwd()}/upload/`
 	},
 	LogConfig = {
 		path : `${process.cwd()}/log/`

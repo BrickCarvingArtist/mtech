@@ -1,5 +1,4 @@
 import {ServerConfig} from "../../config";
-import path from "path";
 import fs from "fs";
 import tempate from "./template";
 const Corp = "砖雕艺术馆管理系统",

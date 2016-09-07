@@ -4,15 +4,15 @@ const Article = new mongoose.Schema({
 		type : String,
 		required : 1
 	},
-	headImage : {
+	file : {
 		type : String
 	},
 	description : {
 		type : String,
 		required : 1
 	},
-	keywords : {
-		type : Array,
+	keyword : {
+		type : String,
 		required : 1
 	},
 	content : {
