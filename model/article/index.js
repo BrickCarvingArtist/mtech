@@ -5,7 +5,8 @@ const Article = new mongoose.Schema({
 		required : 1
 	},
 	file : {
-		type : String
+		type : String,
+		default : ""
 	},
 	description : {
 		type : String,
