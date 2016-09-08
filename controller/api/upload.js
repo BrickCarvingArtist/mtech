@@ -9,11 +9,11 @@ export default (req, res, callback) => {
 			req.body[i] = fields[i];
 		}
 		if(files.file){
-			if(files.file.size >= 10 * 1024 * 1024){
+			if(files.file.size >= 10 * Math.pow(2, 20)){
 				_end = 1;
 				return res.json({
 					code : 400,
-					message : "附件超出限定大小"
+					message : "文件超出限定大小"
 				});
 			} 
 			let s = files.file.name.split(/\./),
@@ -23,7 +23,7 @@ export default (req, res, callback) => {
 				_end = 1;
 				return res.json({
 					code : 400,
-					message : `上传资料格式不正确,支持的文件格式为:${types.join()}`
+					message : `上传文件格式不正确，支持的文件格式为:${types.join()}`
 				});
 			}
 			path = files.file.path;
@@ -35,11 +35,11 @@ export default (req, res, callback) => {
 	form.on("error", e => {
 		return res.json({
 			code : 400,
-			message : "文件上传过程出错,请尝试重新上传"
+			message : "上传文件过程出错，请尝试重新上传"
 		});
 	});
 	form.encoding = "utf-8";
-	form.maxFieldsSize = 5 * 1024 * 1024;
+	form.maxFieldsSize = 5 * Math.pow(2, 20);
 	form.uploadDir = UploadConfig.path;
 	form.keepExtensions = 1;
 	form.on("progress", (bytesReceived, bytesExpected) => {

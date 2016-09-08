@@ -1,3 +1,5 @@
+import request from "request";
+import fs from "fs";
 import Article from "../../model/article";
 import upload from "./upload";
 export default [
@@ -44,58 +46,74 @@ export default [
 		cross : 1,
 		callback(req, res){
 			upload(req, res, file => {
-				const _id = req.body._id;
-				if(_id === "add"){
-					delete req.body._id;
-					const article = new Article(Object.assign(req.body, {
-						file,
-						meta : {
-							createTime : Date.now(),
-							modifiedTime : Date.now()
-						}
-					}));
-					article.save((err, data) => {
-						if(err){
-							console.log(err);
-							res.json({
-								code : 400,
-								data : err.errors,
-								message : "mission failed"
+				request.post({
+					url : "http://127.0.0.1:2000/upload",
+					formData : {
+						file : fs.createReadStream(file)
+					}
+				}, (err, response, body) => {
+					if(err){
+						console.log(err);
+						res.json({
+							code : 400,
+							message : "mission failed"
+						});
+					}else{
+						file = JSON.parse(body).data.path;
+						const _id = req.body._id;
+						if(_id === "add"){
+							delete req.body._id;
+							const article = new Article(Object.assign(req.body, {
+								file,
+								meta : {
+									createTime : Date.now(),
+									modifiedTime : Date.now()
+								}
+							}));
+							article.save((err, data) => {
+								if(err){
+									console.log(err);
+									res.json({
+										code : 400,
+										data : err.errors,
+										message : "mission failed"
+									});
+								}else{
+									res.json({
+										code : 0,
+										data,
+										message : "mission success"
+									});
+								}
 							});
 						}else{
-							res.json({
-								code : 0,
-								data,
-								message : "mission success"
+							Article.findOneAndUpdate({
+								_id
+							}, {
+								$set : Object.assign(req.body, {
+									file,
+									meta : {
+										modifiedTime : Date.now()
+									}
+								})
+							}, (err, data) => {
+								if(err){
+									console.log(err);
+									res.json({
+										code : 400,
+										message : "misson failed"
+									});
+								}else{
+									res.json({
+										code : 0,
+										data,
+										message : "misson success"
+									});
+								}
 							});
 						}
-					});
-				}else{
-					Article.findOneAndUpdate({
-						_id
-					}, {
-						$set : Object.assign(req.body, {
-							file,
-							meta : {
-								modifiedTime : Date.now()
-							}
-						})
-					}, (err, data) => {
-						if(err){
-							console.log(err);
-							res.json({
-								code : 400,
-								message : "misson failed"
-							});
-						}else{
-							res.json({
-								code : 0,
-								data,
-								message : "misson success"
-							});
-						}
-					});
-				}
+					}
+				});
 			});
 		}
 	},
