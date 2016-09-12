@@ -3,7 +3,7 @@ const
 	Enum = {
 		article
 	},
-	Route = article,
+	Route = [],
 	Router = (router) => {
 		let reqType;
 		for(let i in Enum){
@@ -21,16 +21,6 @@ const
 		}
 		return router;
 	};
-for(let i in Enum){
-	Enum[i].map(list => {
-		Route.push({
-			route : `/api/${i.toLowerCase()}/${list.from}`,
-			method : list.method,
-			signType : list.signType
-		});
-	});
-}
 export {
-	Route,
 	Router
 };

@@ -8,9 +8,15 @@ const mongoDBPort = MongoConfig.port,
 	serverPort = process.env.PORT || ServerConfig.port,
 	app = express(),
 	router = express.Router();
-mongoose.connect(`mongodb://${MongoConfig.host}:${mongoDBPort}/db`, err => {
-	console.log(err ? err.message : `MongoDB started on port ${mongoDBPort}`);
-});
+(async () => {
+	try{
+		await mongoose.connect(`mongodb://${MongoConfig.host}:${mongoDBPort}/db`);
+		console.log(`MongoDB started on port ${mongoDBPort}`);
+	}catch(err){
+		console.log(err.message);
+	}
+})();
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
 	extended : 1
 }));

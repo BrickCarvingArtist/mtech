@@ -1,5 +1,3 @@
-import request from "request";
-import fs from "fs";
 import Article from "../../model/article";
 import upload from "./upload";
 export default [
@@ -8,13 +6,21 @@ export default [
 		method : "get",
 		cross : 1,
 		callback(req, res){
-			Article.fetch((err, data) => {
-				res.json({
-					code : 0,
-					data,
-					message : "success"
-				});
-			});
+			(async () => {
+				try{
+					res.json({
+						code : 0,
+						data : await Article.fetch(),
+						message : "success"
+					});
+				}catch(err){
+					console.log(err);
+					res.json({
+						code : 400,
+						message : "fetch data error"
+					});
+				}
+			})();
 		}
 	},
 	{
@@ -22,22 +28,23 @@ export default [
 		method : "get",
 		cross : 1,
 		callback(req, res){
-			Article.where({
-				_id : req.params.id
-			}).select("-__v").findOne((err, data) => {
-				if(err){
-					res.send({
+			(async () => {
+				try{
+					res.json({
+						code : 0,
+						data : await Article.where({
+							_id : req.params.id
+						}).select("-__v").findOne(),
+						message : "success"
+					});
+				}catch(err){
+					console.log(err);
+					res.json({
 						code : 400,
 						message : "no such data searched"
 					});
-				}else{
-					res.json({
-						code : 0,
-						data,
-						message : "success"
-					});
 				}
-			});
+			})();
 		}
 	},
 	{
@@ -45,75 +52,60 @@ export default [
 		method : "post",
 		cross : 1,
 		callback(req, res){
-			upload(req, res, file => {
-				request.post({
-					url : "http://127.0.0.1:2000/upload",
-					formData : {
-						file : fs.createReadStream(file)
-					}
-				}, (err, response, body) => {
-					if(err){
-						console.log(err);
-						res.json({
-							code : 400,
-							message : "mission failed"
-						});
-					}else{
-						file = JSON.parse(body).data.path;
+			upload(req, (err, file) => {
+				if(err){
+					console.log(err);
+					res.json(err);
+				}else{	
+					(async () => {
 						const _id = req.body._id;
 						if(_id === "add"){
 							delete req.body._id;
-							const article = new Article(Object.assign(req.body, {
-								file,
-								meta : {
-									createTime : Date.now(),
-									modifiedTime : Date.now()
-								}
-							}));
-							article.save((err, data) => {
-								if(err){
-									console.log(err);
-									res.json({
-										code : 400,
-										data : err.errors,
-										message : "mission failed"
-									});
-								}else{
-									res.json({
-										code : 0,
-										data,
-										message : "mission success"
-									});
-								}
-							});
+							try{
+								res.json({
+									code : 0,
+									data : await new Article(Object.assign(req.body, {
+										file,
+										meta : {
+											createTime : Date.now(),
+											modifiedTime : Date.now()
+										}
+									})).save(),
+									message : "mission success"
+								});
+							}catch(err){
+								console.log(err);
+								res.json({
+									code : 400,
+									message : "add article failed"
+								});
+							}
 						}else{
-							Article.findOneAndUpdate({
-								_id
-							}, {
-								$set : Object.assign(req.body, {
-									file,
-									meta : {
-										modifiedTime : Date.now()
-									}
-								})
-							}, (err, data) => {
-								if(err){
-									console.log(err);
-									res.json({
-										code : 400,
-										message : "misson failed"
-									});
-								}else{
-									res.json({
-										code : 0,
-										data,
-										message : "misson success"
-									});
-								}
-							});
+							try{
+								res.json({
+									code : 0,
+									data : await Article.findOneAndUpdate({
+										_id
+									}, {
+										$set : Object.assign(req.body, {
+											file,
+											meta : {
+												modifiedTime : Date.now()
+											}
+										})
+									}),
+									message : "misson success"
+								});
+							}catch(err){
+								console.log(err);
+								res.json({
+									code : 0,
+									message : "misson success"
+								});
+							}
 						}
-					}
-				});
+					})();
+				}
 			});
 		}
 	},
@@ -122,23 +114,23 @@ export default [
 		method : "get",
 		cross : 1,
 		callback(req, res){
-			Article.remove({
-				_id : req.params.id
-			}, (err, data) => {
-				if(err){
+			(async () => {
+				try{
+					res.json({
+						code : 0,
+						data : await Article.remove({
+							_id : req.params.id
+						}),
+						message : "misson success"
+					});
+				}catch(err){
 					console.log(err);
 					res.json({
 						code : 400,
 						message : "misson failed"
 					});
-				}else{
-					res.json({
-						code : 0,
-						data,
-						message : "misson success"
-					});
 				}
-			});
+			})();
 		}
 	}
 ];

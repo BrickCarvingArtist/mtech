@@ -2,6 +2,12 @@ const ServerConfig = {
 		host : "127.0.0.1",
 		port : 35000
 	},
+	OSSConfig = {
+		accessKeyId : "LTAI1HnUyotO3lnX",
+		accessKeySecret : "KpVfDwiaueDBXAwh0OabWBQtIbumT9",
+		region : "oss-cn-hangzhou",
+		bucket : "ikindness-static"
+	},
 	MongoConfig = {
 		host : "127.0.0.1",
 		port : 35750
@@ -14,6 +20,7 @@ const ServerConfig = {
 	};
 export {
 	ServerConfig,
+	OSSConfig,
 	MongoConfig,
 	UploadConfig,
 	LogConfig
