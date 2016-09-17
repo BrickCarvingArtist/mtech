@@ -1,6 +1,6 @@
 .DS_store
-/config/
-/dev_server/
-/node_modules/
-/schedule/
-/static/
+config
+dev_server
+node_modules
+schedule
+static
