@@ -21,7 +21,6 @@ export default [
 						message : "获取文章列表成功"
 					});
 				}catch(err){
-					console.log(err);
 					res.json({
 						code : 400,
 						message : "获取文章列表失败"
