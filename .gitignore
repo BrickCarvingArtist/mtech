@@ -1,5 +1,6 @@
 .DS_store
-/node_modules/
-/db/
+/config/
 /dev_server/
-/upload/
+/node_modules/
+/schedule/
+/static/

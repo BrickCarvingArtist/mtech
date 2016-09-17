@@ -1,5 +1,5 @@
 import {ServerConfig} from "../../config";
-import fs from "fs";
+import {readFileSync} from "fs";
 import tempate from "./template";
 const Corp = "砖雕艺术馆管理系统",
 	LocalServer = `http://${ServerConfig.host}:${ServerConfig.port}`,
@@ -7,7 +7,7 @@ const Corp = "砖雕艺术馆管理系统",
 		{
 			route : "*",
 			callback(req, res){
-				res.end(fs.readFileSync(`${process.cwd()}/resource/index.html`, "utf-8"));
+				res.end(readFileSync(`${process.cwd()}/resource/index.html`, "utf-8"));
 			}
 		}
 	],
