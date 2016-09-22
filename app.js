@@ -4,15 +4,15 @@ import mongoose from "mongoose";
 import {Router as RouterApi} from "./controller/api";
 import {Router as RouterStatic} from "./controller/static";
 import {ServerConfig, MongoConfig} from "./config";
-const {
-	host,
-	port,
-	path,
-	user,
-	password
-} = MongoConfig,
-	app = express(),
+const app = express(),
 	router = express.Router(),
+	{
+		host,
+		port,
+		path,
+		user,
+		password
+	} = MongoConfig,
 	ServerPort = ServerConfig.port;
 (async () => {
 	try{
