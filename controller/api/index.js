@@ -1,7 +1,9 @@
+import auth from "./auth";
 import article from "./article";
 const
 	Enum = {
-		article
+		article,
+		auth
 	},
 	Route = [],
 	Router = (router) => {
