@@ -11,7 +11,7 @@ const Corp = "砖雕艺术馆管理系统",
 			route : "*",
 			callback(req, res){
 				if(req.session.user){
-					res.end(readFileSync(`${process.cwd()}/resource/index.html`, "utf-8"));
+					res.end(readFileSync(`${process.cwd()}/view/index.html`, "utf-8"));
 				}else{
 					res.redirect(`${authHost}?host=${hostname}&referer=${req.path}&auth=/api/auth/signIn`);
 				}

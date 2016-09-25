@@ -5,6 +5,7 @@ import mongoose from "mongoose";
 import article from "../../../database/model/article";
 import upload from "./upload";
 import {OSSConfig} from "../../config";
+import {resolve} from "path";
 const client = new OSS(OSSConfig),
 	Article = article(mongoose);
 export default [
@@ -60,7 +61,7 @@ export default [
 			(async () => {
 				try{
 					let file = await upload(req, "/article");
-					req.body.file || file && (file = (await co(client.put(file.replace(`${process.cwd()}/`, ""), file))).url);
+					req.body.file || file && (file = (await co(client.put(file.replace(`${resolve(process.cwd(), "../static")}/`, ""), file))).url.replace("ikindness-static.oss-cn-hangzhou.aliyuncs.com", "static.ikindness.cn"));
 					const _id = req.body._id;
 					if(_id === "add"){
 						delete req.body._id;
@@ -116,8 +117,8 @@ export default [
 						_id : req.params.id
 					}).findOne().select("-_id file")).file;
 					if(file){
-						await co(client.delete(file.replace("http://ikindness-static.oss-cn-hangzhou.aliyuncs.com/", "")));
-						await unlink(file.replace("http://ikindness-static.oss-cn-hangzhou.aliyuncs.com", process.cwd()));
+						await co(client.delete(file.replace("http://static.ikindness.cn/", "")));
+						await unlink(file.replace("http://static.ikindness.cn", resolve(process.cwd(), "../static")));
 					}
 					res.json({
 						code : 0,
